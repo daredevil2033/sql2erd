@@ -67,7 +67,6 @@ public class RecordView {
             }
             mutableNodeMap.get(tableName).addTo(mg);
         }
-        //System.out.println(Graphviz.fromGraph(mg).render(Format.DOT));
         Graphviz.useEngine(new GraphvizV8Engine());
         Graphviz.fromGraph(mg).render(outputFormat).toFile(outputFile);
     }
