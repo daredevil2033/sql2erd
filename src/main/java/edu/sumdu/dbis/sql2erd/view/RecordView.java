@@ -52,7 +52,6 @@ public class RecordView {
                 String fkColumnName = reference.getColumnsNames().get(0);
                 String pkColumnName = reference.getReferencedColumnNames().get(0);
                 Link link = between(port(fkColumnName), referencedNode.port(pkColumnName));
-                Column fkColumn = table.getColumns().stream().collect(Collectors.toMap(Column::getName, Function.identity())).get(fkColumnName);
                 MapAttributes<ForLink> linkAttributes = new MapAttributes<>();
                 if (reference.getName() != null) linkAttributes.add("label", reference.getName());
                 boolean cardinality = reference.getColumnsNames().stream()
