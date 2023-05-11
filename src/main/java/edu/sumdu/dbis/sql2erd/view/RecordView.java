@@ -59,9 +59,11 @@ public class RecordView {
                         .anyMatch(cn -> table.getColumns().stream().collect(Collectors.toMap(Column::getName, Function.identity())).get(cn).isUnique());
                 boolean modality = reference.getColumnsNames().stream()
                         .allMatch(cn -> table.getColumns().stream().collect(Collectors.toMap(Column::getName, Function.identity())).get(cn).isNotNull());
+                boolean identifying = reference.getColumnsNames().stream()
+                        .anyMatch(cn -> table.getColumns().stream().collect(Collectors.toMap(Column::getName, Function.identity())).get(cn).isPrimaryKey());
                 if (Objects.equals(erdNotation, Notation.BARKERS))
-                    barkersAttrs(linkAttributes, cardinality, modality, fkColumn.isPrimaryKey());
-                else crowsFootAttrs(linkAttributes, cardinality, modality);
+                    barkersAttrs(linkAttributes, cardinality, modality, identifying);
+                else crowsFootAttrs(linkAttributes, cardinality, modality, identifying);
                 link.add(linkAttributes);
                 mutableNodeMap.get(tableName).addLink(link);
             }
@@ -82,9 +84,10 @@ public class RecordView {
         if (column.isNotNull()) sb.append(" ").append("NN");
     }
 
-    private static void crowsFootAttrs(MapAttributes<ForLink> linkAttributes, boolean cardinality, boolean modality) {
+    private static void crowsFootAttrs(MapAttributes<ForLink> linkAttributes, boolean cardinality, boolean modality, boolean fkPrimary) {
         linkAttributes.add("arrowtail", cardinality ? "teeodot" : "crowodot");
         linkAttributes.add("arrowhead", modality ? "teetee" : "teeodot");
+        linkAttributes.add("style", fkPrimary ? "solid" : "dashed");
     }
 
 
