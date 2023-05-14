@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static guru.nidi.graphviz.attribute.Records.rec;
 import static guru.nidi.graphviz.model.Factory.*;
 
-public class RecordView {
+public class GraphvizView {
     public static void render(List<Table> tables, File outputFile, Format outputFormat, Notation erdNotation) throws IOException {
         MutableGraph mg = mutGraph().setDirected(true)
                 .graphAttrs().add(Rank.dir(Rank.RankDir.LEFT_TO_RIGHT))

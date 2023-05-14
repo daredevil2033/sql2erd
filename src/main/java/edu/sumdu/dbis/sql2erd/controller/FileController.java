@@ -28,8 +28,7 @@ public class FileController {
         for (Statement statement : statements) {
             if (statement instanceof CreateTable) {
                 CreateTable createTable = (CreateTable) statement;
-                String tableName = createTable.getTable().getName();
-                Table table = new Table(tableName);
+                Table table = new Table(createTable.getTable().getName());
                 getColumns(createTable, table);
                 getIndices(createTable, table);
                 tables.add(table);

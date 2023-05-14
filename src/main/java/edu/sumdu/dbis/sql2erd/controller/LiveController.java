@@ -18,18 +18,18 @@ public class LiveController {
         while (tables.next()) {
             String tableName = tables.getString("TABLE_NAME");
             Table table = new Table(tableName);
-            getColumns(catalogName, schemaName, metaData, tableName, table);
+            getColumns(catalogName, schemaName, metaData, table);
             Map<String, Column> columnMap = table.getColumns().stream().collect(Collectors.toMap(Column::getName, Function.identity()));
             getUniqueConstraints(catalogName, schemaName, metaData, tableName, columnMap);
             getPrimaryKeys(catalogName, schemaName, metaData, tableName, columnMap);
-            getReferences(catalogName, schemaName, metaData, tableName, table, columnMap);
+            getReferences(catalogName, schemaName, metaData, table, columnMap);
             tableList.add(table);
         }
         return tableList;
     }
 
-    private static void getColumns(String catalogName, String schemaName, DatabaseMetaData metaData, String tableName, Table table) throws SQLException {
-        ResultSet columns = metaData.getColumns(catalogName, schemaName, tableName, null);
+    private static void getColumns(String catalogName, String schemaName, DatabaseMetaData metaData, Table table) throws SQLException {
+        ResultSet columns = metaData.getColumns(catalogName, schemaName, table.getName(), null);
         while (columns.next()) {
             Column column;
             int colSize = columns.getInt("COLUMN_SIZE");
@@ -70,8 +70,8 @@ public class LiveController {
         }
     }
 
-    private static void getReferences(String catalogName, String schemaName, DatabaseMetaData metaData, String tableName, Table table, Map<String, Column> columnMap) throws SQLException {
-        ResultSet foreignKeys = metaData.getImportedKeys(catalogName, schemaName, tableName);
+    private static void getReferences(String catalogName, String schemaName, DatabaseMetaData metaData, Table table, Map<String, Column> columnMap) throws SQLException {
+        ResultSet foreignKeys = metaData.getImportedKeys(catalogName, schemaName, table.getName());
         Reference reference = null;
         String currReferencedTableName;
         String prevReferencedTableName = null;

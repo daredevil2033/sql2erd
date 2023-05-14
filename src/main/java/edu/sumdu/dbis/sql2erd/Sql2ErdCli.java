@@ -3,7 +3,7 @@ package edu.sumdu.dbis.sql2erd;
 import edu.sumdu.dbis.sql2erd.controller.FileController;
 import edu.sumdu.dbis.sql2erd.controller.LiveController;
 import edu.sumdu.dbis.sql2erd.model.Table;
-import edu.sumdu.dbis.sql2erd.view.RecordView;
+import edu.sumdu.dbis.sql2erd.view.GraphvizView;
 import guru.nidi.graphviz.engine.Format;
 import picocli.CommandLine;
 
@@ -22,7 +22,7 @@ public class Sql2ErdCli implements Callable<Integer> {
     private Format outputFormat;
 
     @CommandLine.Option(names = {"-n", "--notation"}, defaultValue = "CROWS_FOOT", description = "ERD notation: ${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE})")
-    private RecordView.Notation erdNotation;
+    private GraphvizView.Notation erdNotation;
 
     public static void main(String[] args) {
         System.exit(new CommandLine(new Sql2ErdCli()).setUsageHelpAutoWidth(true).execute(args));
@@ -38,7 +38,7 @@ public class Sql2ErdCli implements Callable<Integer> {
                     inputOption.urlOption.databaseCatalog,
                     inputOption.urlOption.databaseSchema);
         }
-        RecordView.render(tables, outputFile, outputFormat, erdNotation);
+        GraphvizView.render(tables, outputFile, outputFormat, erdNotation);
         return 0;
     }
 
