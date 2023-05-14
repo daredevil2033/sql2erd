@@ -5,13 +5,11 @@ import java.util.List;
 
 public class Table {
     private final String name;
-    private final List<Column> columns;
-    private final List<Reference> references;
+    private final List<Column> columns = new ArrayList<>();
+    private final List<Reference> references = new ArrayList<>();
 
     public Table(String name) {
         this.name = name;
-        this.columns = new ArrayList<>();
-        this.references = new ArrayList<>();
     }
 
     public String getName() {
