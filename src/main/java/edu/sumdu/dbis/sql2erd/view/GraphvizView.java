@@ -31,6 +31,13 @@ public class GraphvizView {
                 .linkAttrs().add("dir", "both")
                 .linkAttrs().add("minlen", 2);
         Map<String, MutableNode> mutableNodeMap = new HashMap<>();
+        addNodes(tables, erdNotation, mutableNodeMap);
+        addEdges(tables, erdNotation, mg, mutableNodeMap);
+        Graphviz.useEngine(new GraphvizV8Engine());
+        Graphviz.fromGraph(mg).render(outputFormat).toFile(outputFile);
+    }
+
+    private static void addNodes(List<Table> tables, Notation erdNotation, Map<String, MutableNode> mutableNodeMap) {
         for (Table table : tables) {
             MutableNode mn = mutNode(table.getName());
             mutableNodeMap.put(table.getName(), mn);
@@ -44,6 +51,9 @@ public class GraphvizView {
             }
             mn.add(Records.of(recs.toArray(new String[0])));
         }
+    }
+
+    private static void addEdges(List<Table> tables, Notation erdNotation, MutableGraph mg, Map<String, MutableNode> mutableNodeMap) {
         for (Table table : tables) {
             String tableName = table.getName();
             for (Reference reference : table.getReferences()) {
@@ -68,8 +78,6 @@ public class GraphvizView {
             }
             mutableNodeMap.get(tableName).addTo(mg);
         }
-        Graphviz.useEngine(new GraphvizV8Engine());
-        Graphviz.fromGraph(mg).render(outputFormat).toFile(outputFile);
     }
 
 
